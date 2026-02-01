@@ -6,56 +6,56 @@ export const duckUIPreset: Partial<Config> = {
   theme: {
     extend: {
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: 'hsl(var(--duck-background))',
+        foreground: 'hsl(var(--duck-foreground))',
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: 'hsl(var(--duck-card))',
+          foreground: 'hsl(var(--duck-card-foreground))',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: 'hsl(var(--duck-popover))',
+          foreground: 'hsl(var(--duck-popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: 'hsl(var(--duck-primary))',
+          foreground: 'hsl(var(--duck-primary-foreground))',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'hsl(var(--duck-secondary))',
+          foreground: 'hsl(var(--duck-secondary-foreground))',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: 'hsl(var(--duck-muted))',
+          foreground: 'hsl(var(--duck-muted-foreground))',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: 'hsl(var(--duck-accent))',
+          foreground: 'hsl(var(--duck-accent-foreground))',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'hsl(var(--duck-destructive))',
+          foreground: 'hsl(var(--duck-destructive-foreground))',
         },
         success: {
-          DEFAULT: 'hsl(var(--success))',
-          foreground: 'hsl(var(--success-foreground))',
+          DEFAULT: 'hsl(var(--duck-success))',
+          foreground: 'hsl(var(--duck-success-foreground))',
         },
         warning: {
-          DEFAULT: 'hsl(var(--warning))',
-          foreground: 'hsl(var(--warning-foreground))',
+          DEFAULT: 'hsl(var(--duck-warning))',
+          foreground: 'hsl(var(--duck-warning-foreground))',
         },
         info: {
-          DEFAULT: 'hsl(var(--info))',
-          foreground: 'hsl(var(--info-foreground))',
+          DEFAULT: 'hsl(var(--duck-info))',
+          foreground: 'hsl(var(--duck-info-foreground))',
         },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        border: 'hsl(var(--duck-border))',
+        input: 'hsl(var(--duck-input))',
+        ring: 'hsl(var(--duck-ring))',
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: 'var(--duck-radius)',
+        md: 'calc(var(--duck-radius) - 2px)',
+        sm: 'calc(var(--duck-radius) - 4px)',
       },
       keyframes: {
         'accordion-down': {
