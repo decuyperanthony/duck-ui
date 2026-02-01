@@ -14,3 +14,7 @@ export {
 
 // Alert
 export { Alert, AlertDescription, AlertTitle, alertVariants } from './alert';
+
+// BottomNav
+export { BottomNav } from './bottom-nav';
+export type { NavItem } from './bottom-nav';
