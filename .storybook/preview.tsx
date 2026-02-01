@@ -19,6 +19,13 @@ const preview: Preview = {
     },
     layout: 'centered',
   },
+  decorators: [
+    (Story) => (
+      <div className="dark">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;
