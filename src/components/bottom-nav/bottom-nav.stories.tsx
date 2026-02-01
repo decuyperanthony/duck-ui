@@ -10,22 +10,8 @@ const meta: Meta<typeof BottomNav> = {
   component: BottomNav,
   tags: ['autodocs'],
   parameters: {
-    layout: 'fullscreen',
+    layout: 'centered',
   },
-  decorators: [
-    (Story) => (
-      <div className="gradient-dark relative h-[500px] w-[375px]">
-        {/* Override fixed positioning for Storybook display */}
-        <style>{`
-          .storybook-bottom-nav {
-            position: absolute !important;
-            display: flex !important;
-          }
-        `}</style>
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export default meta;
@@ -40,26 +26,74 @@ const defaultItems: NavItem[] = [
 ];
 
 export const Default: Story = {
-  render: () => <BottomNav items={defaultItems} activeIndex={0} className="storybook-bottom-nav" />,
+  render: () => (
+    <div className="w-[375px]">
+      <BottomNav items={defaultItems} activeIndex={0} />
+    </div>
+  ),
 };
 
 export const Interactive: Story = {
   render: () => {
     const InteractiveNav = () => {
       const [active, setActive] = useState(0);
-      return <BottomNav items={defaultItems} activeIndex={active} onSelect={setActive} className="storybook-bottom-nav" />;
+      return (
+        <div className="w-[375px]">
+          <BottomNav items={defaultItems} activeIndex={active} onSelect={setActive} />
+        </div>
+      );
     };
     return <InteractiveNav />;
   },
 };
 
-export const CustomItems: Story = {
+export const ThreeItems: Story = {
   render: () => {
     const items: NavItem[] = [
       { label: 'Home', icon: <Icon name="home" size="sm" /> },
       { label: 'Search', icon: <Icon name="search" size="sm" /> },
       { label: 'Settings', icon: <Icon name="settings" size="sm" /> },
     ];
-    return <BottomNav items={items} activeIndex={1} className="storybook-bottom-nav" />;
+    return (
+      <div className="w-[375px]">
+        <BottomNav items={items} activeIndex={1} />
+      </div>
+    );
+  },
+};
+
+export const InMobileFrame: Story = {
+  parameters: {
+    layout: 'fullscreen',
+  },
+  render: () => {
+    const InteractiveNav = () => {
+      const [active, setActive] = useState(0);
+      return (
+        <div className="relative mx-auto h-[667px] w-[375px] overflow-hidden rounded-[40px] border-4 border-foreground/20 bg-background">
+          {/* Screen content */}
+          <div className="flex h-full flex-col">
+            <div className="flex-1 p-4">
+              <h1 className="text-lg font-semibold text-foreground">
+                {defaultItems[active]?.label}
+              </h1>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Tap the navigation below to switch pages.
+              </p>
+            </div>
+
+            {/* Fixed bottom nav wrapper */}
+            <div className="px-3 pb-4">
+              <BottomNav
+                items={defaultItems}
+                activeIndex={active}
+                onSelect={setActive}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    };
+    return <InteractiveNav />;
   },
 };
