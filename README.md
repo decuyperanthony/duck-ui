@@ -14,8 +14,14 @@ A minimal, personal React component library with dark purple theme, glass morphi
 ## Installation
 
 ```bash
-# Install via git
-pnpm add duck-ui@git+https://github.com/YOUR_USERNAME/duck-ui.git
+# Install from GitHub
+pnpm add github:decuyperanthony/duck-ui
+
+# Or with npm
+npm install github:decuyperanthony/duck-ui
+
+# Or with yarn
+yarn add github:decuyperanthony/duck-ui
 ```
 
 ## Setup

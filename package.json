@@ -2,6 +2,10 @@
   "name": "duck-ui",
   "version": "0.1.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/decuyperanthony/duck-ui.git"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,6 +34,7 @@
     "**/*.css"
   ],
   "scripts": {
+    "prepare": "pnpm build",
     "dev": "storybook dev -p 6006",
     "build": "tsc && vite build && cp src/tokens/globals.css dist/tokens/globals.css",
     "build:storybook": "storybook build",
