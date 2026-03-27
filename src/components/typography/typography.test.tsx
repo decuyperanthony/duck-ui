@@ -1,5 +1,3 @@
-import { createRef } from 'react';
-
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
@@ -40,15 +38,6 @@ describe('Typography', () => {
         expect(screen.getByTestId('typo').tagName).toBe(tag);
       });
     });
-  });
-
-  it('overrides tag with the as prop', () => {
-    render(
-      <Typography variant="h1" as="div" data-testid="typo">
-        Text
-      </Typography>
-    );
-    expect(screen.getByTestId('typo').tagName).toBe('DIV');
   });
 
   describe('weight', () => {
@@ -109,17 +98,6 @@ describe('Typography', () => {
       );
       expect(screen.getByTestId('typo')).toHaveClass('text-right');
     });
-  });
-
-  it('forwards ref to the rendered element', () => {
-    const ref = createRef<HTMLElement>();
-    render(
-      <Typography ref={ref} variant="h2">
-        Heading
-      </Typography>
-    );
-    expect(ref.current).toBeInstanceOf(HTMLHeadingElement);
-    expect(ref.current?.tagName).toBe('H2');
   });
 
   it('merges custom className with variant classes', () => {

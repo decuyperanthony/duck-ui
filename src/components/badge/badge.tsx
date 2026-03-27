@@ -4,13 +4,12 @@ import type { ComponentPropsWithoutRef } from 'react';
 import type { VariantProps } from 'class-variance-authority';
 
 import { ShadBadge, shadBadgeVariants } from '@/ui/shad-badge';
-import { cn } from '@/lib/utils';
 
 type BadgeProps = ComponentPropsWithoutRef<'span'> & VariantProps<typeof shadBadgeVariants>;
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant, ...props }, ref) => (
-    <ShadBadge ref={ref} className={cn(className)} variant={variant} {...props} />
+    <ShadBadge ref={ref} className={className} variant={variant} {...props} />
   )
 );
 Badge.displayName = 'Badge';

@@ -27,10 +27,6 @@ const meta: Meta<typeof Typography> = {
       options: ['left', 'center', 'right'],
       description: 'Text alignment',
     },
-    as: {
-      control: 'text',
-      description: 'Override the rendered HTML element',
-    },
     className: {
       control: 'text',
       description: 'Additional CSS classes',
@@ -96,17 +92,17 @@ export const WithColors: Story = {
   ),
 };
 
-export const CustomTag: Story = {
+export const Combined: Story = {
   render: () => (
     <div className="space-y-3">
-      <Typography variant="h1" as="div">
-        h1 variant rendered as a div
+      <Typography variant="h2" weight="bold" color="primary">
+        Bold primary heading
       </Typography>
-      <Typography variant="body" as="label">
-        body variant rendered as a label
+      <Typography variant="lead" color="muted" align="center">
+        Centered muted lead text
       </Typography>
-      <Typography variant="caption" as="p">
-        caption variant rendered as a p
+      <Typography variant="caption" weight="medium" color="destructive" align="right">
+        Right-aligned destructive caption
       </Typography>
     </div>
   ),
