@@ -126,19 +126,60 @@ export default config;
 **3. Use components**
 
 ```tsx
-import { Icon, Card, CardHeader, CardTitle, CardContent, Alert, AlertTitle } from 'duck-ui';
+import { Icon } from 'duck-ui';
 
+// 55+ icons with full autocomplete
+<Icon name="check-circle" size="md" className="text-primary" />
+<Icon name="bell" size="lg" strokeWidth={1.5} />
+```
+
+```tsx
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from 'duck-ui';
+
+// Compose only the parts you need
 <Card>
   <CardHeader>
-    <CardTitle>Dashboard</CardTitle>
+    <CardTitle>Monthly Report</CardTitle>
+    <CardDescription>Revenue overview for March</CardDescription>
   </CardHeader>
   <CardContent>
-    <Alert variant="success">
-      <Icon name="check-circle" size="sm" />
-      <AlertTitle>Saved</AlertTitle>
-    </Alert>
+    <p className="text-2xl font-bold">$12,450</p>
   </CardContent>
+  <CardFooter>
+    <span className="text-muted-foreground text-sm">+8% from last month</span>
+  </CardFooter>
 </Card>
+```
+
+```tsx
+import { Alert, AlertTitle, AlertDescription, Icon } from 'duck-ui';
+
+// 5 variants: default, destructive, success, warning, info
+<Alert variant="success">
+  <Icon name="check-circle" size="sm" />
+  <AlertTitle>Payment confirmed</AlertTitle>
+  <AlertDescription>Your order has been processed.</AlertDescription>
+</Alert>
+
+<Alert variant="warning">
+  <Icon name="alert-triangle" size="sm" />
+  <AlertTitle>Low stock</AlertTitle>
+</Alert>
+```
+
+```tsx
+import { BottomNav } from 'duck-ui';
+
+// Mobile navigation with liquid glass effect
+<BottomNav
+  items={[
+    { icon: 'home', label: 'Home' },
+    { icon: 'search', label: 'Search' },
+    { icon: 'settings', label: 'Settings' },
+  ]}
+  activeIndex={0}
+  onSelect={(index) => setActive(index)}
+/>
 ```
 
 ---
