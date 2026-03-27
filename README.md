@@ -6,26 +6,197 @@ A personal React component library with a dark purple theme, glass morphism effe
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8?logo=tailwindcss)
 ![Storybook](https://img.shields.io/badge/Storybook-8-ff4785?logo=storybook)
-![Vitest](https://img.shields.io/badge/Vitest-2.1-6e9f18?logo=vitest)
+![Vitest](https://img.shields.io/badge/Vitest-97_tests-6e9f18?logo=vitest)
 
 **[Live Storybook](https://duck-ui.vercel.app)**
 
 ---
 
-## What's Inside
+## Quick Start
 
-### Components
+```bash
+pnpm add github:decuyperanthony/duck-ui
+```
 
-| Component | Description |
-|-----------|-------------|
-| **Icon** | 55+ Lucide icons with full TypeScript autocomplete, 5 size presets, configurable stroke width |
-| **Card** | Composition-based card system (Header, Title, Description, Content, Footer) with gradient + glass morphism |
-| **Alert** | 5 semantic variants (default, destructive, success, warning, info) using CVA |
-| **BottomNav** | Mobile navigation with liquid glass effect, active state glow, and `aria-current` support |
+```typescript
+// tailwind.config.ts
+import { duckUIPreset } from 'duck-ui/tailwind.preset';
 
-### Design Tokens
+export default {
+  content: ['./app/**/*.{ts,tsx}', './node_modules/duck-ui/dist/**/*.js'],
+  presets: [duckUIPreset],
+};
+```
 
-A complete token system using CSS custom properties (HSL without wrapper for maximum flexibility):
+```css
+/* globals.css */
+@import 'duck-ui/tokens/globals.css';
+```
+
+---
+
+## Components
+
+### Card
+
+Simple props-based API with optional badge support.
+
+```tsx
+import { Card } from 'duck-ui';
+
+<Card title="Revenue" description="March 2026" badge={{ children: '+8%', variant: 'default' }}>
+  <p className="text-2xl font-bold">$12,450</p>
+</Card>
+
+<Card title="Users" footer={<span className="text-muted-foreground text-sm">Updated 2min ago</span>}>
+  <p className="text-4xl font-bold">1,234</p>
+</Card>
+
+// Minimal — just children, no header
+<Card>
+  <p>Any content here</p>
+</Card>
+```
+
+### Typography
+
+10 variants with auto HTML tag mapping, weight, color, and alignment control.
+
+```tsx
+import { Typography } from 'duck-ui';
+
+<Typography variant="h1">Dashboard</Typography>           // renders <h1>
+<Typography variant="body">Some paragraph text</Typography> // renders <p>
+<Typography variant="caption" color="muted">Last updated</Typography> // renders <span>
+
+// Override the HTML tag
+<Typography variant="h2" as="p">Styled as h2, renders as p</Typography>
+
+// Weight + color + alignment
+<Typography variant="body" weight="bold" color="primary" align="center">
+  Highlighted centered text
+</Typography>
+```
+
+### Button
+
+6 variants, 8 sizes, works with icons.
+
+```tsx
+import { Button, Icon } from 'duck-ui';
+
+<Button>Default</Button>
+<Button variant="destructive" size="sm">Delete</Button>
+<Button variant="outline" size="lg">Cancel</Button>
+<Button variant="ghost" size="icon"><Icon name="settings" size="sm" /></Button>
+```
+
+### Badge
+
+Inline labels with 6 variants.
+
+```tsx
+import { Badge } from 'duck-ui';
+
+<Badge>Default</Badge>
+<Badge variant="destructive">Error</Badge>
+<Badge variant="secondary">Draft</Badge>
+<Badge variant="outline">v1.2.0</Badge>
+```
+
+### Alert
+
+5 semantic variants with icon support.
+
+```tsx
+import { Alert, AlertTitle, AlertDescription, Icon } from 'duck-ui';
+
+<Alert variant="success">
+  <Icon name="check-circle" size="sm" />
+  <AlertTitle>Payment confirmed</AlertTitle>
+  <AlertDescription>Your order has been processed.</AlertDescription>
+</Alert>
+
+<Alert variant="warning">
+  <Icon name="alert-triangle" size="sm" />
+  <AlertTitle>Low stock</AlertTitle>
+</Alert>
+```
+
+### Icon
+
+55+ Lucide icons with full TypeScript autocomplete.
+
+```tsx
+import { Icon } from 'duck-ui';
+
+<Icon name="check-circle" size="md" className="text-primary" />
+<Icon name="bell" size="lg" strokeWidth={1.5} />
+```
+
+### BottomNav
+
+Mobile navigation with liquid glass effect.
+
+```tsx
+import { BottomNav } from 'duck-ui';
+
+<BottomNav
+  items={[
+    { icon: <Icon name="home" />, label: 'Home' },
+    { icon: <Icon name="search" />, label: 'Search' },
+    { icon: <Icon name="settings" />, label: 'Settings' },
+  ]}
+  activeIndex={0}
+  onSelect={(index) => setActive(index)}
+/>
+```
+
+### Separator
+
+```tsx
+import { Separator } from 'duck-ui';
+
+<Separator />                          // horizontal
+<Separator orientation="vertical" />   // vertical
+```
+
+---
+
+## Architecture
+
+```
+src/
+├── ui/                    # Shadcn primitives (internal, never exported)
+│   ├── shad-button.tsx
+│   ├── shad-card.tsx
+│   ├── shad-badge.tsx
+│   └── shad-separator.tsx
+├── components/            # Public API — what consumers import
+│   ├── card/              # Simple props: title, description, badge, footer
+│   ├── typography/        # CVA: variant, weight, color, align + auto tag
+│   ├── button/            # 6 variants, 8 sizes
+│   ├── badge/             # 6 variants
+│   ├── alert/             # 5 semantic variants
+│   ├── icon/              # 55+ type-safe icons
+│   ├── bottom-nav/        # Mobile nav with glass effect
+│   └── separator/         # Horizontal/vertical divider
+├── tokens/
+│   ├── globals.css        # CSS variables + utility classes
+│   └── tailwind.preset.ts
+└── index.ts               # Exports only components/, never ui/
+```
+
+**Key decisions:**
+- **`ui/` vs `components/`** — Shadcn primitives live in `ui/` with `Shad` prefix, never exported. Public components in `components/` wrap them with simpler APIs
+- **Props over composition** — Card takes `title`, `description`, `badge` as props instead of requiring 6 nested components
+- **Type-safe icons** — Registry pattern with auto-generated union type
+- **CVA everywhere** — Typography, Alert, Button, Badge all use class-variance-authority for consistent variant management
+- **HSL without wrapper** — CSS variables store raw HSL values for flexible use in colors, shadows, and glows
+
+---
+
+## Design Tokens
 
 | Token | Color | Usage |
 |-------|-------|-------|
@@ -39,40 +210,11 @@ A complete token system using CSS custom properties (HSL without wrapper for max
 
 ### CSS Utilities
 
-Built-in utility classes for consistent visual effects:
-
 - **Gradients** — `.gradient-dark`, `.gradient-card`, `.gradient-header`
-- **Glass effects** — `.glass-dark`, `.liquid-glass` (iOS-inspired blur + saturation)
+- **Glass effects** — `.glass-dark`, `.liquid-glass`
 - **Glows** — `.glow-primary`, `.glow-accent`
 - **Shadows** — `.shadow-soft`, `.shadow-elevated`
 - **Animations** — `.animate-in`, `.animate-slide-up`, `.animate-fade-in`, `.animate-glow`
-
----
-
-## Architecture
-
-```
-src/
-├── components/          # Each component: .tsx + .test.tsx + .stories.tsx
-│   ├── icon/            # Type-safe registry pattern (55+ icons)
-│   ├── card/            # Composition pattern (6 composable parts)
-│   ├── alert/           # CVA variant pattern (5 variants)
-│   └── bottom-nav/      # Interactive pattern (active state + aria)
-├── tokens/
-│   ├── globals.css      # 370 lines of CSS variables + utilities
-│   └── tailwind.preset.ts
-├── lib/
-│   ├── utils.ts         # cn() — clsx + tailwind-merge
-│   └── object-utils.ts  # Type-safe Object.keys/entries
-└── index.ts             # Barrel exports
-```
-
-**Key decisions:**
-- **Composition over configuration** — Card ships 6 composable parts instead of a single component with variant props
-- **Type-safe icon registry** — `ICON_MAP` as const object, union type auto-generated via `ObjectUtils.keys()`
-- **HSL without wrapper** — CSS variables store raw HSL values (`270 89% 8%`), enabling flexible use in colors, shadows, and glows
-- **CVA for variants** — Alert uses class-variance-authority, exported for consumer customization
-- **Vite library mode** — 3 entry points (components, tokens, preset), ES + CJS output, auto-generated `.d.ts`
 
 ---
 
@@ -83,104 +225,9 @@ src/
 | Components | React 18, TypeScript 5.6 (strict, no `any`, no `as`) |
 | Styling | Tailwind CSS 3.4, CVA, tailwind-merge |
 | Icons | Lucide React (55+ icons, tree-shakeable) |
-| Testing | Vitest 2.1, Testing Library, v8 coverage |
+| Testing | Vitest 2.1, Testing Library (97 tests) |
 | Documentation | Storybook 8 (20+ interactive stories) |
 | Build | Vite 5.4 (library mode, ES + CJS + types) |
-| Code quality | ESLint (strict TS rules), Prettier (Tailwind plugin) |
-
----
-
-## Installation
-
-```bash
-pnpm add github:decuyperanthony/duck-ui
-```
-
-### Setup
-
-**1. Tailwind preset**
-
-```typescript
-// tailwind.config.ts
-import type { Config } from 'tailwindcss';
-import { duckUIPreset } from 'duck-ui/tailwind.preset';
-
-const config: Config = {
-  content: [
-    './app/**/*.{ts,tsx}',
-    './node_modules/duck-ui/dist/**/*.js',
-  ],
-  presets: [duckUIPreset],
-};
-
-export default config;
-```
-
-**2. CSS tokens**
-
-```css
-/* globals.css */
-@import 'duck-ui/tokens/globals.css';
-```
-
-**3. Use components**
-
-```tsx
-import { Icon } from 'duck-ui';
-
-// 55+ icons with full autocomplete
-<Icon name="check-circle" size="md" className="text-primary" />
-<Icon name="bell" size="lg" strokeWidth={1.5} />
-```
-
-```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from 'duck-ui';
-
-// Compose only the parts you need
-<Card>
-  <CardHeader>
-    <CardTitle>Monthly Report</CardTitle>
-    <CardDescription>Revenue overview for March</CardDescription>
-  </CardHeader>
-  <CardContent>
-    <p className="text-2xl font-bold">$12,450</p>
-  </CardContent>
-  <CardFooter>
-    <span className="text-muted-foreground text-sm">+8% from last month</span>
-  </CardFooter>
-</Card>
-```
-
-```tsx
-import { Alert, AlertTitle, AlertDescription, Icon } from 'duck-ui';
-
-// 5 variants: default, destructive, success, warning, info
-<Alert variant="success">
-  <Icon name="check-circle" size="sm" />
-  <AlertTitle>Payment confirmed</AlertTitle>
-  <AlertDescription>Your order has been processed.</AlertDescription>
-</Alert>
-
-<Alert variant="warning">
-  <Icon name="alert-triangle" size="sm" />
-  <AlertTitle>Low stock</AlertTitle>
-</Alert>
-```
-
-```tsx
-import { BottomNav } from 'duck-ui';
-
-// Mobile navigation with liquid glass effect
-<BottomNav
-  items={[
-    { icon: 'home', label: 'Home' },
-    { icon: 'search', label: 'Search' },
-    { icon: 'settings', label: 'Settings' },
-  ]}
-  activeIndex={0}
-  onSelect={(index) => setActive(index)}
-/>
-```
 
 ---
 
@@ -188,7 +235,7 @@ import { BottomNav } from 'duck-ui';
 
 ```bash
 pnpm dev              # Storybook on :6006
-pnpm test             # Vitest
+pnpm test             # Vitest (97 tests)
 pnpm test:coverage    # Coverage report
 pnpm type-check       # TypeScript check
 pnpm lint:fix         # ESLint + auto-fix
