@@ -1,32 +1,104 @@
 # Duck UI
 
-A minimal, personal React component library with dark purple theme, glass morphism effects, and type-safe icons.
+A personal React component library with a dark purple theme, glass morphism effects, and a type-safe icon system. Built to be reused across multiple apps with a single `pnpm add`.
 
-## Features
+![React](https://img.shields.io/badge/React-18-61dafb?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8?logo=tailwindcss)
+![Storybook](https://img.shields.io/badge/Storybook-8-ff4785?logo=storybook)
+![Vitest](https://img.shields.io/badge/Vitest-2.1-6e9f18?logo=vitest)
 
-- Dark purple theme with teal accents
-- Glass morphism and gradient effects
-- Type-safe icon system (55+ Lucide icons)
-- Tailwind CSS preset for consistent theming
-- Storybook for documentation
-- Full test coverage with Vitest
+**[Live Storybook](https://duck-ui.vercel.app)**
+
+---
+
+## What's Inside
+
+### Components
+
+| Component | Description |
+|-----------|-------------|
+| **Icon** | 55+ Lucide icons with full TypeScript autocomplete, 5 size presets, configurable stroke width |
+| **Card** | Composition-based card system (Header, Title, Description, Content, Footer) with gradient + glass morphism |
+| **Alert** | 5 semantic variants (default, destructive, success, warning, info) using CVA |
+| **BottomNav** | Mobile navigation with liquid glass effect, active state glow, and `aria-current` support |
+
+### Design Tokens
+
+A complete token system using CSS custom properties (HSL without wrapper for maximum flexibility):
+
+| Token | Color | Usage |
+|-------|-------|-------|
+| `--background` | Deep purple | Page background |
+| `--primary` | Teal | Interactive elements |
+| `--accent` | Light purple | Secondary highlights |
+| `--destructive` | Red | Error states |
+| `--success` | Green | Success states |
+| `--warning` | Orange | Warning states |
+| `--info` | Blue | Info states |
+
+### CSS Utilities
+
+Built-in utility classes for consistent visual effects:
+
+- **Gradients** — `.gradient-dark`, `.gradient-card`, `.gradient-header`
+- **Glass effects** — `.glass-dark`, `.liquid-glass` (iOS-inspired blur + saturation)
+- **Glows** — `.glow-primary`, `.glow-accent`
+- **Shadows** — `.shadow-soft`, `.shadow-elevated`
+- **Animations** — `.animate-in`, `.animate-slide-up`, `.animate-fade-in`, `.animate-glow`
+
+---
+
+## Architecture
+
+```
+src/
+├── components/          # Each component: .tsx + .test.tsx + .stories.tsx
+│   ├── icon/            # Type-safe registry pattern (55+ icons)
+│   ├── card/            # Composition pattern (6 composable parts)
+│   ├── alert/           # CVA variant pattern (5 variants)
+│   └── bottom-nav/      # Interactive pattern (active state + aria)
+├── tokens/
+│   ├── globals.css      # 370 lines of CSS variables + utilities
+│   └── tailwind.preset.ts
+├── lib/
+│   ├── utils.ts         # cn() — clsx + tailwind-merge
+│   └── object-utils.ts  # Type-safe Object.keys/entries
+└── index.ts             # Barrel exports
+```
+
+**Key decisions:**
+- **Composition over configuration** — Card ships 6 composable parts instead of a single component with variant props
+- **Type-safe icon registry** — `ICON_MAP` as const object, union type auto-generated via `ObjectUtils.keys()`
+- **HSL without wrapper** — CSS variables store raw HSL values (`270 89% 8%`), enabling flexible use in colors, shadows, and glows
+- **CVA for variants** — Alert uses class-variance-authority, exported for consumer customization
+- **Vite library mode** — 3 entry points (components, tokens, preset), ES + CJS output, auto-generated `.d.ts`
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Components | React 18, TypeScript 5.6 (strict, no `any`, no `as`) |
+| Styling | Tailwind CSS 3.4, CVA, tailwind-merge |
+| Icons | Lucide React (55+ icons, tree-shakeable) |
+| Testing | Vitest 2.1, Testing Library, v8 coverage |
+| Documentation | Storybook 8 (20+ interactive stories) |
+| Build | Vite 5.4 (library mode, ES + CJS + types) |
+| Code quality | ESLint (strict TS rules), Prettier (Tailwind plugin) |
+
+---
 
 ## Installation
 
 ```bash
-# Install from GitHub
 pnpm add github:decuyperanthony/duck-ui
-
-# Or with npm
-npm install github:decuyperanthony/duck-ui
-
-# Or with yarn
-yarn add github:decuyperanthony/duck-ui
 ```
 
-## Setup
+### Setup
 
-### 1. Configure Tailwind
+**1. Tailwind preset**
 
 ```typescript
 // tailwind.config.ts
@@ -36,7 +108,6 @@ import { duckUIPreset } from 'duck-ui/tailwind.preset';
 const config: Config = {
   content: [
     './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
     './node_modules/duck-ui/dist/**/*.js',
   ],
   presets: [duckUIPreset],
@@ -45,197 +116,46 @@ const config: Config = {
 export default config;
 ```
 
-### 2. Import CSS
+**2. CSS tokens**
 
 ```css
 /* globals.css */
 @import 'duck-ui/tokens/globals.css';
-
-/* Optional: Override tokens */
-:root {
-  --primary: 200 80% 50%; /* Custom primary color */
-}
 ```
 
-## Components
-
-### Icon
-
-Type-safe icon component with 55+ Lucide icons.
+**3. Use components**
 
 ```tsx
-import { Icon } from 'duck-ui';
-
-<Icon name="check" size="md" className="text-primary" />
-<Icon name="alert-circle" size="lg" strokeWidth={1.5} />
-```
-
-**Props:**
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `name` | `IconName` | required | Icon name (autocomplete supported) |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'sm'` | Size preset (12-48px) |
-| `strokeWidth` | `number` | `2` | Stroke width (1-3) |
-| `className` | `string` | - | Additional CSS classes |
-
-**Available icons:** `check`, `check-circle`, `x`, `x-circle`, `info`, `alert-circle`, `alert-triangle`, `help-circle`, `arrow-up`, `arrow-down`, `arrow-left`, `arrow-right`, `chevron-up`, `chevron-down`, `chevron-left`, `chevron-right`, `plus`, `minus`, `search`, `settings`, `user`, `users`, `home`, `menu`, `bell`, `calendar`, `clock`, `mail`, `phone`, `star`, `heart`, `eye`, `lock`, `trash`, `edit`, `copy`, `download`, `upload`, `share`, `link`, `external-link`, `filter`, `folder`, `file`, `image`, `loader`, `moon`, `sun`, `more-horizontal`, `more-vertical`, `log-out`, `refresh-cw`, `archive`, `map-pin`, `message-circle`, `calendar-check`
-
-### Card
-
-Gradient card with glass morphism and hover effects.
-
-```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from 'duck-ui';
+import { Icon, Card, CardHeader, CardTitle, CardContent, Alert, AlertTitle } from 'duck-ui';
 
 <Card>
   <CardHeader>
     <CardTitle>Dashboard</CardTitle>
-    <CardDescription>Welcome back!</CardDescription>
   </CardHeader>
   <CardContent>
-    <p>Your content here</p>
+    <Alert variant="success">
+      <Icon name="check-circle" size="sm" />
+      <AlertTitle>Saved</AlertTitle>
+    </Alert>
   </CardContent>
-  <CardFooter>
-    <button>Action</button>
-  </CardFooter>
 </Card>
 ```
 
-### Alert
-
-Semantic alert with 5 variants.
-
-```tsx
-import { Alert, AlertTitle, AlertDescription, Icon } from 'duck-ui';
-
-<Alert variant="success">
-  <Icon name="check-circle" size="sm" />
-  <AlertTitle>Success!</AlertTitle>
-  <AlertDescription>Your changes have been saved.</AlertDescription>
-</Alert>
-```
-
-**Variants:** `default` | `destructive` | `success` | `warning` | `info`
-
-## Design Tokens
-
-All colors use CSS variables (HSL format without wrapper):
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--background` | `270 89% 8%` | Deep purple background |
-| `--foreground` | `0 0% 98%` | Light text |
-| `--primary` | `172 66% 50%` | Teal accent |
-| `--accent` | `280 60% 60%` | Light purple |
-| `--destructive` | `0 72% 51%` | Red |
-| `--success` | `142 76% 36%` | Green |
-| `--warning` | `38 92% 50%` | Orange |
-| `--info` | `199 89% 48%` | Blue |
-| `--card` | `270 60% 12%` | Card background |
-| `--border` | `270 30% 20%` | Border color |
-| `--muted` | `270 30% 15%` | Muted elements |
-
-## CSS Utilities
-
-Utility classes included in `globals.css`:
-
-| Class | Effect |
-|-------|--------|
-| `.gradient-card` | Card gradient background |
-| `.gradient-dark` | Full page gradient |
-| `.gradient-header` | Horizontal header gradient |
-| `.glass-dark` | Glass morphism effect |
-| `.glow-primary` | Primary color glow |
-| `.glow-accent` | Accent color glow |
-| `.shadow-soft` | Soft shadow |
-| `.shadow-elevated` | Elevated shadow |
-| `.animate-in` | Fade in + slide up |
-| `.animate-slide-up` | Slide up animation |
-| `.animate-fade-in` | Fade in animation |
-| `.animate-glow` | Pulsing glow |
+---
 
 ## Development
 
 ```bash
-# Install dependencies
-pnpm install
-
-# Start Storybook (dev mode)
-pnpm dev
-
-# Run tests
-pnpm test
-
-# Run tests with UI
-pnpm test:ui
-
-# Type check
-pnpm type-check
-
-# Lint
-pnpm lint:fix
-
-# Build library
-pnpm build
-
-# Build Storybook
-pnpm build:storybook
+pnpm dev              # Storybook on :6006
+pnpm test             # Vitest
+pnpm test:coverage    # Coverage report
+pnpm type-check       # TypeScript check
+pnpm lint:fix         # ESLint + auto-fix
+pnpm build            # Library build (ES + CJS + types)
+pnpm build:storybook  # Static Storybook
 ```
 
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── icon/           # Type-safe icon system
-│   ├── card/           # Card components
-│   └── alert/          # Alert components
-├── tokens/
-│   ├── globals.css     # CSS variables & utilities
-│   └── tailwind.preset.ts
-├── lib/
-│   ├── utils.ts        # cn() helper
-│   └── object-utils.ts # ObjectUtils.keys()
-├── stories/
-│   └── tokens.stories.tsx
-└── index.ts
-```
-
-## Adding New Icons
-
-1. Import from `lucide-react` in `src/components/icon/icon-registry.ts`
-2. Add to `ICON_MAP` with kebab-case key
-3. Type is automatically inferred
-
-```typescript
-// icon-registry.ts
-import { NewIcon } from 'lucide-react';
-
-const ICON_MAP = {
-  // ... existing icons
-  'new-icon': NewIcon,
-} as const;
-```
-
-## Exports
-
-```typescript
-// Components
-import {
-  Icon,
-  Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter,
-  Alert, AlertTitle, AlertDescription
-} from 'duck-ui';
-
-// Types
-import type { IconName, IconSize, IconProps } from 'duck-ui';
-
-// Utilities
-import { cn, ObjectUtils } from 'duck-ui';
-
-// Tailwind preset
-import { duckUIPreset } from 'duck-ui/tailwind.preset';
-```
+---
 
 ## License
 
