@@ -1,1 +1,2 @@
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card';
+export { Card } from './card';
+export type { CardBadgeProps, CardProps } from './card';
