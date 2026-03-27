@@ -19,10 +19,13 @@ const meta: Meta<typeof Alert> = {
 export default meta;
 type Story = StoryObj<typeof Alert>;
 
-// Default
+// Default — args are wired to controls
 export const Default: Story = {
-  render: () => (
-    <Alert className="max-w-md">
+  args: {
+    variant: 'default',
+  },
+  render: (args) => (
+    <Alert {...args} className="max-w-md">
       <Icon name="info" size="sm" />
       <AlertTitle>Heads up!</AlertTitle>
       <AlertDescription>You can add components to your app using the CLI.</AlertDescription>
