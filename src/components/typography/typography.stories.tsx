@@ -92,6 +92,22 @@ export const WithColors: Story = {
   ),
 };
 
+export const CustomTag: Story = {
+  render: () => (
+    <div className="space-y-3">
+      <Typography variant="h1" as="span">
+        h1 variant rendered as a span
+      </Typography>
+      <Typography variant="body" as="label">
+        body variant rendered as a label
+      </Typography>
+      <Typography variant="caption" as="li">
+        caption variant rendered as a li
+      </Typography>
+    </div>
+  ),
+};
+
 export const Combined: Story = {
   render: () => (
     <div className="space-y-3">
