@@ -16,7 +16,7 @@ export const shadBadgeVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground',
         destructive: 'bg-destructive text-white',
         outline: 'border-border text-foreground',
-        ghost: '',
+        ghost: 'text-foreground hover:bg-muted/50',
         link: 'text-primary underline-offset-4',
       },
     },
